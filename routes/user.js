@@ -5,25 +5,25 @@ const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcrypt');
 const secret = "RESTAPI"
 
-router.get("/", async (req, res) => {
-    try {
-        const users = await User.find()
-        res.status(200).send(users)
+// router.get("/", async (req, res) => {
+//     try {
+//         const users = await User.find()
+//         res.status(200).send(users)
 
-    } catch (e) {
-        res.status(400).send(e.message)
-    }
-})
-router.get("/:id", async (req, res) => {
-    const _id = req.params.id
-    try {
-        const users = await User.findById(_id)
-        res.status(200).send(users)
+//     } catch (e) {
+//         res.status(400).send(e.message)
+//     }
+// })
+// router.get("/:id", async (req, res) => {
+//     const _id = req.params.id
+//     try {
+//         const users = await User.findById(_id)
+//         res.status(200).send(users)
 
-    } catch (e) {
-        res.status(400).send(e.message)
-    }
-})
+//     } catch (e) {
+//         res.status(400).send(e.message)
+//     }
+// })
 router.post("/register"
     , body('name').isAlpha()
     , body('email').isEmail()
