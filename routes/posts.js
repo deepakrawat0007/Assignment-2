@@ -8,7 +8,7 @@ router.use(bodyparser.json());
 // parse application/x-www-form-urlencoded
 router.use(bodyparser.urlencoded({ extended: false }))
 
-router.get("/posts/get" , async (req,res)=>{
+router.get("/posts" , async (req,res)=>{
 try{
     const posts = await Post.find({user:req.user})
     res.status(200).json({
