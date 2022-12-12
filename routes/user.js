@@ -37,7 +37,7 @@ router.post("/register"
                     "errors": errors.array()
                 })
             }
-            const IsUser = await User.find({ email: email })
+            const IsUser = await User.findOne({ email: email })
             if (IsUser) {
                 return res.status(400).json({
                     "message": "User ALredy Exist with given Mail-ID"
