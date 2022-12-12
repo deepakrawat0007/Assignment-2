@@ -14,30 +14,30 @@ app.use(bodyparser.json())
 
 app.use('/posts', (req, res, next) => {
 
-    if(req.headers.authorization){
+    if (req.headers.authorization) {
         const token = req.headers.authorization
-if(token){
-    jwt.verify(token , secret , function(err,decoded) {
-        if(err){
-            return res.status(400).json({
-                message : "Not a Valid Token"
+        if (token) {
+            jwt.verify(token, secret, function (err, decoded) {
+                if (err) {
+                    return res.status(400).json({
+                        message: "Not a Valid Token"
+                    })
+                }
+                req.user = decoded.data;
+                next()
+            })
+        } else {
+            return res.status(401).json({
+                message: "Token Missing"
             })
         }
-       req.user = decoded.data;
-       next()
-    })
-}else{
-    return res.status(401).json({
-        message:"Token Missing"
-    })
-}
 
-    }else{
+    } else {
         return res.status(403).json({
-            message:"Not Authenticated User"
+            message: "Not Authenticated User"
         })
     }
-  })
+})
 
 app.use("/", userRoute);
 app.use("/", PostRoute);
