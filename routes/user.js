@@ -37,24 +37,30 @@ router.post("/register"
                     "errors": errors.array()
                 })
             }
-            bcrypt.hash(password, 10, async function (err, hash) {
-                if (err) {
-                    return res.status(500).json({
-                        "message": err.message,
+            const IsUser = await User.find({ email: email })
+            if (IsUser) {
+                return res.status(400).json({
+                    "message": "User ALredy Exist with given Mail-ID"
+                })
+            } else {
+                bcrypt.hash(password, 10, async function (err, hash) {
+                    if (err) {
+                        return res.status(500).json({
+                            "message": err.message,
+                        })
+                    }
+                    const user = await User.create({
+                        name: name,
+                        email: email,
+                        password: hash
                     })
-                }
-                const user = await User.create({
-                    name: name,
-                    email: email,
-                    password: hash
+                    return res.status(200).json({
+                        "message": "User Created Successfully",
+                        "User": user
+                    })
                 })
-                return res.status(200).json({
-                    "message": "User Created Successfully",
-                    "User": user
-                })
-            })
-
-        } catch(e) {
+            }
+        } catch (e) {
             return res.status(400).json({
                 message: e.message
             })
@@ -73,7 +79,7 @@ router.post("/login"
                 })
             }
             const { email, password } = req.body
-            let isuser = await User.findOne({ email })
+            let isuser = await User.findOne({ email })  // name, email , pass , id
             if (!isuser) {
                 return res.status(400).json({
                     message: "No User Found with Given Mail-ID"
@@ -86,10 +92,10 @@ router.post("/login"
                 }
                 if (result) {
 
-                  const token = jwt.sign({
+                    const token = jwt.sign({
                         exp: Math.floor(Date.now() / 1000) + (60 * 60),
                         data: isuser._id
-                      }, secret);
+                    }, secret);
 
                     return res.status(200).json({
                         message: "Login SuccessFull",

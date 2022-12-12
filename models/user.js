@@ -5,11 +5,11 @@ const ObjectId = Schema.ObjectId
 
 
 const UserSchema = new Schema({
-    name:{type:String , required : true},
-    email:{type : String , unique :true},
-    password:{type : String , required :true}
-},{collection:"Users"})
+    name: { type: String, required: true },
+    email: { type: String, unique: true },
+    password: { type: String, required: true }
+}, { collection: "Users" })
 
-const User = mongoose.model("User" , UserSchema)
+const User = mongoose.model("User", UserSchema)
 
 module.exports = User;
